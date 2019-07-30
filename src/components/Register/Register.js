@@ -6,8 +6,13 @@ class Register extends React.Component {
         this.state = {
             email: '',
             password: '',
-            name: ''
+            name: '',
+            error: ''
         }
+    }
+
+    displayError = (error) => {
+        this.setState({error: error})
     }
 
     onNameChange = (event) => {
@@ -38,6 +43,8 @@ class Register extends React.Component {
             if (user.id){
                 this.props.loadUser(user);
                 this.props.onRouteChange('home');
+            } else {
+                this.displayError(user);
             }
         })
         .catch(err => console.log(err))
@@ -52,6 +59,13 @@ class Register extends React.Component {
                     <form className="measure">
                         <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
                         <legend className="f1 fw6 ph0 mh0">Register</legend>
+                        {
+                                this.state.error.length 
+                                ?
+                                    <div className="alert alert-danger">{this.state.error}</div>
+                                :
+                                ''
+                        } 
                         <div className="mt3">
                             <label className="db fw6 lh-copy f6" htmlFor="name">Name</label>
                             <input 

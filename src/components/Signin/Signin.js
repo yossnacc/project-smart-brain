@@ -5,8 +5,13 @@ class Signin extends React.Component {
         super(props);
         this.state = {
             signInEmail: '',
-            signInPassword: ''
+            signInPassword: '',
+            error: ''
         }
+    }
+
+    displayError = (error) => {
+        this.setState({error: error})
     }
 
     onEmailChange = (event) => {
@@ -32,7 +37,9 @@ class Signin extends React.Component {
           if(user.id){
             this.props.loadUser(user);
             this.props.onRouteChange('home');
-          }
+          } else{
+            this.displayError(user);
+            }
         })
         .catch(err => console.log(err))
        
@@ -46,6 +53,13 @@ class Signin extends React.Component {
                     <form className="measure">
                         <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
                         <legend className="f1 fw6 ph0 mh0">Sign In</legend>
+                        {
+                                this.state.error.length 
+                                ?
+                                    <div className="alert alert-danger">{this.state.error}</div>
+                                :
+                                ''
+                        } 
                         <div className="mt3">
                             <label className="db fw6 lh-copy f6" htmlFor="email-address">Email</label>
                             <input 
